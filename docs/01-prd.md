@@ -1,233 +1,266 @@
 # Product Requirements Document (PRD) — LibraryNest
 
-## 1. Project Overview
+| **Field**    | **Value**                                                                                            |
+| ------------ | ---------------------------------------------------------------------------------------------------- |
+| Product      | LibraryNest                                                                                          |
+| Version      | MVP + Beta                                                                                           |
+| Releases     | MVP — Mid-term, Beta — Final                                                                         |
+| Status       | Draft                                                                                                |
+| Related docs | [Software Requirements Specification (SRS)](02-srs.md), [Technical Design Document (TDD)](03-tdd.md) |
 
-**Project Name:** LibraryNest
-**Document:** Product Requirements Document (PRD)
-**Project Type:** Web-Based Library Management System
+This document covers **both releases**. Every goal, feature, and user story is marked with its release so that the functionality planned for the mid-term and final demonstrations is clearly separated.
 
-LibraryNest is a web-based library management system designed to simplify book discovery, book inventory management, and book borrowing workflows. It provides a centralized platform where students can search for books and request loans, librarians can manage books and borrowing requests, and administrators can manage users and system access.
+## Documents in this set
 
-The project will be developed in two releases: MVP for the mid-term demonstration and Beta for the final demonstration.
+| **Short form** | **Full form**                       | **Purpose**                                                 | **File**               |
+| -------------- | ----------------------------------- | ----------------------------------------------------------- | ---------------------- |
+| PRD            | Product Requirements Document       | What we build and why                                       | [01-prd.md](01-prd.md) |
+| SRS            | Software Requirements Specification | Detailed requirements, permissions, and acceptance criteria | [02-srs.md](02-srs.md) |
+| TDD            | Technical Design Document           | Architecture, data model, API, and implementation design    | [03-tdd.md](03-tdd.md) |
 
-## 2. Problem Statement
+## 0. Release plan
 
-Traditional library management may rely on manual records or disconnected processes to manage books, borrowing requests, and user information. These processes can make book discovery difficult, increase administrative workload, and create opportunities for inaccurate records.
-
-LibraryNest aims to organize these activities through a web application with a centralized database and REST API.
-
-* **MVP:** Provide core book management and search functionality through REST APIs.
-* **Beta:** Introduce authentication, role-based authorization, borrowing workflows, and administrative user management.
-
-## 3. Goals and Objectives
-
-### MVP Goals
-
-* **MVP:** Allow users to retrieve and search book information.
-* **MVP:** Support creating, viewing, updating, and deleting book records.
-* **MVP:** Store book information in a database.
-* **MVP:** Provide a REST API that can be integrated with the frontend.
-
-### Beta Goals
-
-* **Beta:** Allow users to register and log in securely.
-* **Beta:** Enforce role-based access control for Students, Librarians, and Admins.
-* **Beta:** Allow students to submit borrowing requests and view their own loan history.
-* **Beta:** Allow librarians to approve or reject borrowing requests and manage returns.
-* **Beta:** Allow administrators to manage user accounts and roles.
-* **Beta:** Protect private information and prevent unauthorized access.
-
-## 4. Target Users
-
-| User Role | Description                                                                               |
-| --------- | ----------------------------------------------------------------------------------------- |
-| Student   | Searches for books, views book details, requests loans, and checks personal loan history. |
-| Librarian | Manages book records, reviews borrowing requests, and records book returns.               |
-| Admin     | Manages user accounts, assigns roles, and oversees system access.                         |
-
-## 5. Release Plan and Roadmap
-
-LibraryNest will be developed incrementally, beginning with core book management and expanding to secure, role-based library workflows.
+| **Release** | **When** | **Focus**                                                                                                                   |
+| ----------- | -------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **MVP**     | Mid-term | Core book CRUD REST API, book search, database integration, and basic frontend-backend integration                          |
+| **Beta**    | Final    | Authentication, user profiles, role-based authorization, borrowing workflows, admin user management, and security hardening |
 
 ```mermaid
 flowchart TD
-    A[Requirements and Documentation] --> B[Data Model and Database]
+    A[Documentation and Requirements] --> B[Database and Data Layer]
     B --> C[Book CRUD REST API]
-    C --> D[MVP: Mid-Term Demo]
-    D --> E[Authentication and User Profile]
-    E --> F[Role-Based Authorization]
-    F --> G[Loan Management]
-    G --> H[Admin User Management]
-    H --> I[Security Review]
-    I --> J[Beta: Final Demo]
+    C --> D[Book Search and Frontend Integration]
+    D --> E[MVP: Mid-Term Demo]
+    E --> F[Registration, Login and Profile]
+    F --> G[JWT Authentication and RBAC]
+    G --> H[Borrowing and Loan Management]
+    H --> I[Admin User Management]
+    I --> J[Security Verification]
+    J --> K[Beta: Final Demo]
 ```
 
-### MVP — Mid-Term Release
+## 1. Purpose
 
-The MVP focuses on the essential book catalog and book management functionality.
+LibraryNest is a web-based library management system that organizes book information and borrowing activities in one place.
 
-**Included features:**
+The project will be developed in two releases:
 
-* Book creation, retrieval, updating, and deletion.
-* Search by book title or author.
-* Database integration.
-* REST API endpoints.
-* Input validation and appropriate HTTP status codes.
-* Basic frontend-backend integration.
+1. **MVP (mid-term):** Deliver a working book management system with book CRUD operations, search, database integration, and REST API endpoints.
+2. **Beta (final):** Extend the MVP with user accounts, authentication, role-based permissions, borrowing workflows, and administrative user management.
 
-**Milestones:**
+The project will prioritize a small, working, demonstrable MVP before introducing the more complex Beta features.
 
-1. Complete the project documentation.
-2. Design the database and implement the data layer.
-3. Implement and verify book CRUD APIs.
-4. Integrate the frontend with the backend.
-5. Prepare and demonstrate the MVP before the mid-term assessment.
+## 2. Problem statement
 
-### Beta — Final Release
+Students need a convenient way to discover library books and access relevant book information. Librarians need a structured way to maintain book records, review borrowing requests, and track returned books. Administrators need to manage user access securely.
 
-The Beta release extends the MVP with authentication, authorization, borrowing workflows, and administrative features.
+Without a centralized system, book information and borrowing records can become difficult to maintain, search, and verify.
 
-**Included features:**
+LibraryNest addresses these needs through a searchable book catalog, structured database records, and controlled borrowing workflows.
 
-* User registration and login.
-* JWT-based authentication.
-* Student, Librarian, and Admin roles.
-* Role-based authorization and protected API endpoints.
-* Borrowing request creation and management.
-* Loan history for individual students.
-* Book return management.
-* Administrative user and role management.
-* Security hardening and error handling.
+## 3. Goals
 
-**Milestones:**
+| **ID** | **Goal**                                                                               | **Release** |
+| ------ | -------------------------------------------------------------------------------------- | ----------- |
+| G-01   | Provide REST API endpoints for creating, reading, updating, and deleting book records. | MVP         |
+| G-02   | Store book information in a relational database.                                       | MVP         |
+| G-03   | Allow users to search for books by title or author.                                    | MVP         |
+| G-04   | Provide clear validation errors and appropriate HTTP status codes.                     | MVP         |
+| G-05   | Integrate the book management API with the frontend.                                   | MVP         |
+| G-06   | Allow users to register, log in, and manage their basic profile.                       | Beta        |
+| G-07   | Protect user-specific functionality through authentication and authorization.          | Beta        |
+| G-08   | Enforce Student, Librarian, and Admin roles.                                           | Beta        |
+| G-09   | Allow students to request loans and view their own loan history.                       | Beta        |
+| G-10   | Allow librarians to approve or reject requests and manage returns.                     | Beta        |
+| G-11   | Allow admins to manage users and assign roles.                                         | Beta        |
+| G-12   | Protect private records and prevent unauthorized operations.                           | Beta        |
 
-1. Implement authentication and user profile management.
-2. Implement role-based permissions.
-3. Develop borrowing, approval, and return workflows.
-4. Add administrative user management.
-5. Review security and validate authorization rules.
-6. Prepare and demonstrate the Beta release before the final assessment.
+## 4. Target users
 
-## 6. Scope
+| **User**              | **Need**                                                               | **Release** |
+| --------------------- | ---------------------------------------------------------------------- | ----------- |
+| Student / end user    | Browse the book catalog and search for relevant books.                 | MVP         |
+| Librarian             | Create, view, update, and delete book records.                         | MVP         |
+| Frontend developer    | Use documented REST API endpoints to integrate the user interface.     | MVP         |
+| Instructor / reviewer | Review the project and verify the book management API.                 | MVP         |
+| Registered student    | Log in, request book loans, and view personal loan history.            | Beta        |
+| Librarian             | Review borrowing requests, approve or reject them, and record returns. | Beta        |
+| Admin                 | Manage users, assign roles, and control access to the application.     | Beta        |
 
-### In Scope
+In the **MVP**, the system focuses on the book catalog and book management. In the **Beta**, users have authenticated accounts and borrowing operations follow role-based permissions.
 
-**MVP**
+## 5. Scope
 
-* Book CRUD operations.
-* Book catalog retrieval and search.
-* Database integration.
-* REST API development.
-* Input validation and error responses.
+### In scope — MVP (mid-term)
 
-**Beta**
+* Create, list, view, update, and delete book records.
+* Search books by title or author.
+* Store book information in a relational database.
+* Validate required book fields and reject invalid input.
+* Return clear API error responses.
+* Provide REST API endpoints for frontend integration.
+* Implement basic frontend pages for the book catalog and book management.
+* Demonstrate the working book management workflow.
 
-* Registration and login.
-* JWT-based authentication.
-* Role-based authorization.
-* Student loan history.
-* Borrowing request approval and rejection.
-* Book return management.
-* Admin user and role management.
-* Access control and security improvements.
+### In scope — Beta (final)
 
-### Out of Scope
+* **Authentication:** User registration, login, and logout.
+* **User profile:** View profile and update basic profile information.
+* **Authorization:** Student, Librarian, and Admin roles with backend permission checks.
+* **Personal loan history:** Students can view their own borrowing records.
+* **Loan requests:** Students can request books.
+* **Librarian workflow:** Approve or reject loan requests and record returned books.
+* **Admin management:** List users and manage user roles.
+* **Security:** Secure password storage, protected endpoints, input validation, and access control.
+* **Integration:** Connect the frontend with authenticated APIs and borrowing workflows.
 
-* **MVP and Beta:** Online payment processing.
-* **MVP and Beta:** AI-based book recommendations.
-* **MVP and Beta:** Native Android or iOS applications.
-* **MVP and Beta:** Integration with external library networks.
-* **MVP and Beta:** Advanced analytics beyond basic administrative summaries.
+### Out of scope for this semester
 
-## 7. Feature Prioritization — MoSCoW
+* Online payment processing and fine payment gateways.
+* AI-based book recommendations.
+* Native Android or iOS applications.
+* Integration with external library networks.
+* Email or SMS notification services.
+* Advanced analytics beyond basic administrative information.
+* Automated tests and CI/CD pipelines, unless required separately by the course.
 
-MoSCoW prioritization classifies features as Must Have, Should Have, Could Have, or Won't Have for the current project scope.
+## 6. Features and priority (MoSCoW)
 
-| ID   | Feature                                     | Priority    | Release               |
-| ---- | ------------------------------------------- | ----------- | --------------------- |
-| F-01 | Create book records                         | Must Have   | MVP                   |
-| F-02 | View book lists and details                 | Must Have   | MVP                   |
-| F-03 | Update and delete book records              | Must Have   | MVP                   |
-| F-04 | Search books by title or author             | Must Have   | MVP                   |
-| F-05 | Database integration                        | Must Have   | MVP                   |
-| F-06 | Input validation and API error handling     | Must Have   | MVP                   |
-| F-07 | User registration and login                 | Must Have   | Beta                  |
-| F-08 | JWT authentication                          | Must Have   | Beta                  |
-| F-09 | Role-based authorization                    | Must Have   | Beta                  |
-| F-10 | Student borrowing requests and loan history | Must Have   | Beta                  |
-| F-11 | Librarian approval and return management    | Must Have   | Beta                  |
-| F-12 | Admin user and role management              | Must Have   | Beta                  |
-| F-13 | Additional catalog filters                  | Should Have | Beta, if time permits |
-| F-14 | Basic administrative summaries              | Could Have  | Beta, if time permits |
-| F-15 | Online payments and AI recommendations      | Won't Have  | Out of scope          |
+Priorities are per release: a Beta Must Have feature is required for the final demonstration, not necessarily for the mid-term.
 
-## 8. User Stories
+| **ID** | **Feature**                                        | **Release** | **Priority** |
+| ------ | -------------------------------------------------- | ----------- | ------------ |
+| F-01   | Create a book record                               | MVP         | Must         |
+| F-02   | List books and view book details                   | MVP         | Must         |
+| F-03   | Update a book record                               | MVP         | Must         |
+| F-04   | Delete a book record                               | MVP         | Must         |
+| F-05   | Search books by title or author                    | MVP         | Must         |
+| F-06   | Database integration for book records              | MVP         | Must         |
+| F-07   | Input validation and API error responses           | MVP         | Must         |
+| F-08   | Basic frontend integration with book APIs          | MVP         | Should       |
+| F-09   | User registration and login                        | Beta        | Must         |
+| F-10   | User profile viewing and updating                  | Beta        | Should       |
+| F-11   | JWT-based authentication                           | Beta        | Must         |
+| F-12   | Student, Librarian, and Admin roles                | Beta        | Must         |
+| F-13   | Backend role-based permission checks               | Beta        | Must         |
+| F-14   | Student borrowing requests                         | Beta        | Must         |
+| F-15   | Student personal loan history                      | Beta        | Must         |
+| F-16   | Librarian approval and rejection of loan requests  | Beta        | Must         |
+| F-17   | Book return management                             | Beta        | Must         |
+| F-18   | Admin user listing and role management             | Beta        | Must         |
+| F-19   | Security hardening and access-control verification | Beta        | Must         |
+| F-20   | Additional catalog filters                         | Beta        | Could        |
+| F-21   | Basic administrative summaries                     | Beta        | Could        |
 
-### MVP User Stories
+## 7. User stories
 
-* **US-01 (MVP):** As a user, I want to view the book catalog so that I can discover available books.
-* **US-02 (MVP):** As a user, I want to search books by title or author so that I can find relevant books quickly.
-* **US-03 (MVP):** As a librarian, I want to add new books so that the catalog stays up to date.
-* **US-04 (MVP):** As a librarian, I want to update book details so that incorrect information can be corrected.
-* **US-05 (MVP):** As a librarian, I want to delete outdated book records so that the catalog remains accurate.
-* **US-06 (MVP):** As a developer, I want validated REST API endpoints so that the frontend can communicate reliably with the backend.
+### MVP
 
-### Beta User Stories
+| **ID**      | **Story**                                                                                                         | **Feature** |
+| ----------- | ----------------------------------------------------------------------------------------------------------------- | ----------- |
+| US-01 (MVP) | As a user, I want to view all books so that I can discover books available in the library.                        | F-02        |
+| US-02 (MVP) | As a user, I want to view an individual book so that I can read its details.                                      | F-02        |
+| US-03 (MVP) | As a user, I want to search books by title or author so that I can find a relevant book quickly.                  | F-05        |
+| US-04 (MVP) | As a librarian, I want to add a book so that new books become available in the catalog.                           | F-01        |
+| US-05 (MVP) | As a librarian, I want to update book information so that incorrect details can be corrected.                     | F-03        |
+| US-06 (MVP) | As a librarian, I want to delete a book record when appropriate so that the catalog remains accurate.             | F-04        |
+| US-07 (MVP) | As a developer, I want validated API requests and clear errors so that the frontend can handle failures properly. | F-07        |
+| US-08 (MVP) | As an instructor, I want to verify the book API so that I can review the core project functionality.              | F-01–F-08   |
 
-* **US-07 (Beta):** As a student, I want to register and log in so that I can access my personal library features.
-* **US-08 (Beta):** As a user, I want to update my profile information so that my account details remain current.
-* **US-09 (Beta):** As a student, I want to request a book loan so that I can borrow books from the library.
-* **US-10 (Beta):** As a student, I want to view my own loan history so that I can track my borrowing activity.
-* **US-11 (Beta):** As a librarian, I want to approve or reject loan requests so that borrowing is properly managed.
-* **US-12 (Beta):** As a librarian, I want to record returned books so that availability information remains accurate.
-* **US-13 (Beta):** As an admin, I want to manage user accounts and roles so that system access is controlled.
-* **US-14 (Beta):** As a system administrator, I want protected endpoints to enforce permissions so that users cannot perform unauthorized actions.
+### Beta
 
-## 9. Success Metrics
+| **ID**       | **Story**                                                                                                                | **Feature**      |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------ | ---------------- |
+| US-09 (Beta) | As a visitor, I want to register so that I can create my own account.                                                    | F-09             |
+| US-10 (Beta) | As a registered user, I want to log in and log out so that I can access my account securely.                             | F-09, F-11       |
+| US-11 (Beta) | As a user, I want to view and update my profile so that my basic account information stays current.                      | F-10             |
+| US-12 (Beta) | As a student, I want to request a book loan so that I can borrow a book from the library.                                | F-14             |
+| US-13 (Beta) | As a student, I want to view my own loan history so that I can track my borrowing activity.                              | F-15             |
+| US-14 (Beta) | As a librarian, I want to approve or reject loan requests so that borrowing can be managed properly.                     | F-16             |
+| US-15 (Beta) | As a librarian, I want to record returned books so that loan records and availability remain accurate.                   | F-17             |
+| US-16 (Beta) | As an admin, I want to list users and assign roles so that system access can be managed.                                 | F-18             |
+| US-17 (Beta) | As a system administrator, I want protected endpoints to enforce permissions so that unauthorized actions are prevented. | F-12, F-13, F-19 |
+| US-18 (Beta) | As a student, I want my loan records to remain private so that other students cannot view my personal borrowing history. | F-13, F-15, F-19 |
 
-### MVP Success Metrics
+## 8. Success metrics
 
-* **MVP:** 100% of defined book CRUD API operations pass the documented manual verification scenarios.
-* **MVP:** Users can retrieve book records and search by title or author.
-* **MVP:** All required book fields are validated, and invalid requests return appropriate error responses.
-* **MVP:** The frontend can retrieve and display book data through the backend API.
-* **MVP:** The core book management workflow is demonstrated before the mid-term assessment.
+### MVP
 
-### Beta Success Metrics
+* All five core book operations—create, list/view, retrieve details, update, and delete—pass the documented manual verification scenarios.
+* Book search returns matching records for the documented title and author search scenarios.
+* All documented invalid-input scenarios are rejected with appropriate error responses.
+* Book data can be created, retrieved, and updated through the backend API.
+* The frontend can complete the defined MVP book workflows using the backend API.
+* The MVP is ready for the mid-term demonstration.
 
-* **Beta:** Successful login returns valid authentication credentials, and invalid credentials are rejected.
-* **Beta:** 100% of documented role-permission scenarios behave as expected.
-* **Beta:** Students can access their own loan history but cannot access another student's private loan records.
-* **Beta:** Librarians can approve or reject requests and record returns.
-* **Beta:** Admins can manage user accounts and roles through protected endpoints.
-* **Beta:** The complete borrowing workflow is demonstrated before the final assessment.
+### Beta
 
-## 10. Assumptions and Constraints
+* Valid users can authenticate, and invalid login attempts are rejected.
+* All documented role-permission scenarios pass verification.
+* Students cannot read or modify another student's private loan history.
+* Librarians can approve or reject requests and record book returns.
+* Only authorized admins can manage user accounts and roles.
+* Passwords are never stored or returned in plaintext.
+* All defined Must Have Beta workflows are ready for the final demonstration.
 
-* The application will use a web-based architecture.
-* The backend will expose REST APIs.
-* A relational database will store books, users, and loans.
-* The frontend and backend will be developed as separate components.
-* Authentication and role-based authorization are Beta requirements.
+These are target metrics; actual results will be recorded during implementation and verification.
+
+## 9. Assumptions and constraints
+
+* The project will use a web-based architecture.
+* The backend will expose REST API endpoints.
+* A relational database will store book, user, and loan records.
+* The frontend and backend will communicate through the defined API contracts.
+* **MVP:** Core book management will be completed before advanced Beta functionality.
+* **Beta:** Protected operations will enforce authorization on the backend.
+* Students, Librarians, and Admins will have distinct permissions.
 * The project must remain within the semester timeline and course requirements.
-* The final technology stack will be documented in the Technical Design Document (TDD).
+* The exact deployment configuration and technology versions will be specified in the TDD.
 
-## 11. Dependencies and Risks
+## 10. Milestones
 
-| Risk                                     | Impact                            | Mitigation                                                          |
-| ---------------------------------------- | --------------------------------- | ------------------------------------------------------------------- |
-| Database design errors                   | Incorrect or inconsistent records | Review the data model before implementation.                        |
-| Authentication or authorization mistakes | Unauthorized data access          | Verify protected endpoints for each role.                           |
-| Scope expansion                          | Delays in milestone completion    | Prioritize Must Have features first.                                |
-| Frontend-backend integration issues      | Incomplete user workflows         | Define API contracts early and verify them during integration.      |
-| Insufficient time for Beta features      | Incomplete final demonstration    | Complete and demonstrate the MVP before starting advanced features. |
+### MVP — Mid-term
 
-## 12. Related Documents
+| **Milestone**      | **Deliverable**                                      |
+| ------------------ | ---------------------------------------------------- |
+| M1 — Docs          | PRD, SRS, and TDD covering MVP and Beta              |
+| M2 — Data layer    | Book model, database schema, and database connection |
+| M3 — API           | Book CRUD REST endpoints with validation             |
+| M4 — Search        | Book search by title or author                       |
+| M5 — Integration   | Basic frontend integration with the book API         |
+| M6 — Mid-term demo | Working MVP book management workflow demonstrated    |
 
-* [Software Requirements Specification (SRS)](02-srs.md)
-* [Technical Design Document (TDD)](03-tdd.md)
-* [Project README](../README.md)
+### Beta — Final
 
-## 13. Approval
+| **Milestone**           | **Deliverable**                                                       |
+| ----------------------- | --------------------------------------------------------------------- |
+| B1 — Authentication     | Registration, login, logout, and profile functionality                |
+| B2 — RBAC               | Student, Librarian, and Admin roles with protected endpoints          |
+| B3 — Loan requests      | Student borrowing requests and personal loan history                  |
+| B4 — Librarian workflow | Request approval/rejection and book return management                 |
+| B5 — Admin management   | User listing and role management                                      |
+| B6 — Security           | Password protection, input validation, and authorization verification |
+| B7 — Final demo         | Integrated Beta demonstrated with the defined role-based workflows    |
 
-This PRD defines the planned scope, priorities, user stories, and success criteria for the MVP and Beta releases of LibraryNest. The requirements should be reviewed and approved before implementation begins.
+## 11. Release dependencies
+
+* The Beta builds on the MVP book catalog and database layer.
+* The book model must be defined before implementing the book CRUD endpoints.
+* The API contracts must be stable enough for frontend integration.
+* **Beta:** Authentication must be implemented before protected user-specific endpoints.
+* **Beta:** Role definitions and permission rules must be established before loan and admin operations are exposed.
+* **Beta:** The loan data model must connect students and books before borrowing workflows can be implemented.
+* **Beta:** Book availability and loan status rules must be defined before approval and return management.
+* **Beta:** All protected endpoints must enforce backend authorization rather than relying only on frontend visibility.
+
+## 12. Related requirements and design
+
+The Software Requirements Specification (SRS) will define detailed functional requirements, non-functional requirements, use cases, role permissions, validation rules, status codes, acceptance criteria, and requirement-to-endpoint traceability.
+
+The Technical Design Document (TDD) will describe the technology stack, architecture, project structure, database schema, API endpoints, authentication, authorization, security design, and deployment approach.
+
+## 13. Review and approval
+
+**Status:** Draft
+
+This PRD defines the intended scope, release priorities, user stories, success metrics, milestones, and dependencies for LibraryNest. The document should be reviewed against the course requirements and approved before implementation begins.
